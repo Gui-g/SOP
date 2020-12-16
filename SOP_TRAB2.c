@@ -137,13 +137,11 @@ void *search_matrix(void *arguments) {
     pthread_barrier_wait(&barrier);
     switch(new_func_arg.option) {
         case 1:
-            printf("começo 1\n");
             for(i = 0; i < new_func_arg.row; i++) {
                 for(j = 0; j < new_func_arg.col; j++) {
                     if (new_func_arg.matrix[i][j] == new_func_arg.num) {
                         pthread_mutex_lock(&mutex);
                         if(obtido == 0) {
-                            printf("vitoria 1\n");
                             *(resultado + new_func_arg.round-1) = new_func_arg.option;
                             obtido = 1;
                         }
@@ -153,13 +151,11 @@ void *search_matrix(void *arguments) {
             }
         break;
         case 2:
-            printf("começo 2\n");
             for(i = 0; i < new_func_arg.row; i++) {
                 for(j = new_func_arg.col-1; j >= 0; j--) {
                     if (new_func_arg.matrix[i][j] == new_func_arg.num) {
                         pthread_mutex_lock(&mutex);
                         if(obtido == 0) {
-                            printf("vitoria 2\n");
                             *(resultado + new_func_arg.round-1) = new_func_arg.option;
                             obtido = 1;
                         }
@@ -169,13 +165,11 @@ void *search_matrix(void *arguments) {
             }
         break;
         case 3:
-            printf("começo 3\n");
             for(i = new_func_arg.row-1; i >= 0; i--) {
                 for(j = 0; j < new_func_arg.col; j++) {
                     if (new_func_arg.matrix[i][j] == new_func_arg.num) {
                         pthread_mutex_lock(&mutex);
                         if(obtido == 0) {
-                            printf("vitoria 3\n");
                             *(resultado + new_func_arg.round-1) = new_func_arg.option;
                             obtido = 1;
                         }
@@ -185,13 +179,11 @@ void *search_matrix(void *arguments) {
             }
         break;
         case 4:
-            printf("começo 4\n");
             for(i = new_func_arg.row-1; i >= 0; i--) {
                 for(j = new_func_arg.col-1; j >= 0; j--) {
                     if (new_func_arg.matrix[i][j] == new_func_arg.num) {
                         pthread_mutex_lock(&mutex);
                         if(obtido == 0) {
-                            printf("vitoria 4\n");
                             *(resultado + new_func_arg.round-1) = new_func_arg.option;
                             obtido = 1;
                         }
