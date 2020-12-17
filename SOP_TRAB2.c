@@ -4,6 +4,7 @@
 #include <pthread.h>
 #include <unistd.h>
 #include <syscall.h>
+#include "trabalho.h"
 
 pthread_barrier_t barrier;
 pthread_mutex_t mutex = PTHREAD_MUTEX_INITIALIZER;
@@ -11,18 +12,6 @@ pthread_cond_t cond = PTHREAD_COND_INITIALIZER;
 int obtido = 0;
 int *resultado;
 
-typedef struct arguments {
-    int** matrix;
-    int num;
-    int row;
-    int col;
-    int option;
-    int round;
-} args;
-
-void swap(int *num1, int *num2);
-void random_array(int array[], int n);
-void *search_matrix(void *arguments);
 int main(int argc, char* argv[]) {
     
     /*carregar dados*/
@@ -64,7 +53,11 @@ int main(int argc, char* argv[]) {
     }
 
     /*mutex init*/
-    pthread_mutex_init(&mutex, NULL);
+    rc = pthread_mutex_init(&mutex, NULL);
+    if (rc != 0) {
+	    perror("erro em pthread_mutex_init()");
+        exit(1);
+    }
 
     /*threads*/
     pthread_t threads[4];
@@ -81,6 +74,10 @@ int main(int argc, char* argv[]) {
             new_arg.option = i+1;
             rc = pthread_create(&threads[i], NULL, search_matrix, &new_arg);
             usleep(500);
+            if (rc != 0) {
+                perror("erro em pthread_create()");
+                exit(1);
+            }
         }
 
         for (i = 0; i < 4; i++) {
@@ -135,6 +132,7 @@ void *search_matrix(void *arguments) {
     args *func_arg = arguments;
     args new_func_arg = *func_arg;
     pthread_barrier_wait(&barrier);
+    usleep(500);
     switch(new_func_arg.option) {
         case 1:
             for(i = 0; i < new_func_arg.row; i++) {
@@ -193,7 +191,5 @@ void *search_matrix(void *arguments) {
             }
         break;       
     }
-    
-    return 0;
 }
 
