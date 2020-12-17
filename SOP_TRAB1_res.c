@@ -8,7 +8,6 @@
 sem_t semA;
 sem_t semBC1;
 sem_t semBC2;
-sem_t semBC3;
 int value;
 
 void* A(void *args);
