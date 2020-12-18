@@ -13,7 +13,9 @@ int obtido = 0;
 int *resultado;
 
 int main(int argc, char* argv[]) {
-    
+
+    srand(time(0));
+
     /*carregar dados*/
     char *p;
     long m = strtol(argv[1], &p, 10);
@@ -52,8 +54,8 @@ int main(int argc, char* argv[]) {
         exit(1);
     }
 
-    /*mutex init*/
-    rc = pthread_mutex_init(&mutex, NULL);
+    /*mutex*/
+    pthread_mutex_init(&mutex, NULL);
     if (rc != 0) {
 	    perror("erro em pthread_mutex_init()");
         exit(1);
@@ -68,7 +70,7 @@ int main(int argc, char* argv[]) {
 
     for(j=0;j<r;j++) {
         new_arg.round = j+1;
-        new_arg.num = rand() % m*n+1;
+        new_arg.num = (rand() % m*n + 1);
         obtido = 0;
         for (i=0; i<4; i++) {
             new_arg.option = i+1;
@@ -82,6 +84,10 @@ int main(int argc, char* argv[]) {
 
         for (i = 0; i < 4; i++) {
 	        rc = pthread_join(threads[i], NULL);
+            if (rc != 0) {
+                perror("erro em pthread_join()");
+                exit(1);
+            }
         }
     }
 
@@ -106,6 +112,17 @@ int main(int argc, char* argv[]) {
             printf("%d ", i+1);
     }
     printf("\n");
+
+    pthread_barrier_destroy(&barrier);
+    pthread_mutex_destroy(&mutex);
+    free(resultado);
+    free(r_array);
+    for (int i=0; i<m; ++i) {
+        free(matriz[i]);
+    }
+    free(matriz);
+
+    return 0;
 }
 
 void swap(int *num1, int *num2) {
@@ -116,9 +133,7 @@ void swap(int *num1, int *num2) {
 
 void random_array(int array[], int n) {
     int i;
-    time_t t;
 
-    srand((unsigned) time(&t));
     for (int i = n-1; i > 0; i--) 
     {  
         int j = rand() % (i+1); 
@@ -192,4 +207,3 @@ void *search_matrix(void *arguments) {
         break;       
     }
 }
-
