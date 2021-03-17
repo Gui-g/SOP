@@ -145,7 +145,6 @@ void random_array(int array[], int n) {
 void *search_matrix(void *arguments) {
     int i, j;
     args *func_arg = arguments;
-    args new_func_arg = *func_arg;
     pthread_barrier_wait(&barrier);
     usleep(500);
     switch(new_func_arg.option) {
