@@ -50,24 +50,21 @@ print("percentage: ", (counter/total_files)*100)
 print("g)")
 block_size = 4096
 file_count_g = 0
-block_total = 0
 file_count_level0 = 0
 file_count_level1 = 0
 file_count_level2 = 0
 file_count_level3 = 0
 for num in number_list:
     block_num = ceil(num / block_size)
-    block_total += block_num
-    file_count_g += 1
-    if(block_total == 12):
-        file_count_level0 = file_count_g
-    if(block_total == 12+1094):
-        file_count_level1 = file_count_g - file_count_level0
-    else:
-        file_count_level2 = file_count_g - (file_count_level1 + file_count_level0)
-#print(block_total)
+    if(block_num <= 12):
+        file_count_level0 += 1
+    elif(block_num <= 12+1094):
+        file_count_level1 += 1
+    elif(block_num <= 12+1094+1094*1094):
+        file_count_level2 += 1
+    elif(block_num <= 12+1094+1094*1094+1094*1094*1094):
+        file_count_level3 += 1
 
-    #Arquivos esgotam antes da indireção tripla
 print("arquivos nos 12 ponteiros diretos: " + str(file_count_level0) + " | " + str((file_count_level0/total_files)*100) + 
 "\narquivos em indireção simples: " + str(file_count_level1) + " | " + str((file_count_level1/total_files)*100))
 print("arquivos em indireção dupla: " + str(file_count_level2) + " | " + str((file_count_level2/total_files)*100) + 
