@@ -131,7 +131,7 @@ data block_merge(data new_block, data old_block) {
         old_block.num = (new_block.bloco_inicial - old_block.bloco_inicial) + new_block.num;
     }
     //bloco inicial[old] > bloco inicial[new]
-    //Sobreposição: 104 2, 100 6 => 100 6 (104-100 = 4 + 2 = 6)
+    //Sobreposição: 104 4, 100 6 => 100 8 (104-100 = 4 + 4 = 8)
     //Adjacência: 100 6, 95 5 => 95 11 (100-95 = 5 + 6 = 11)
     //bloco inicial = bloco novo
     //numero de blocos = |bloco1 - bloco2| + numero de blocos[old]
