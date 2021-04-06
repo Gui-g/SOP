@@ -10,7 +10,6 @@ struct data {
 
 void insert(data new_block);
 data block_merge(data new_block, data old_block);
-void delete_from_insert_array(int position);
 void delete_from_final_array(int position);
 
 data* final_queue;
