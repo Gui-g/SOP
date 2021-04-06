@@ -66,22 +66,27 @@ void insert(data new_block) {
     int i;
     data aux;
     if (!final_queue) {
-        final_queue = (data*)malloc(sizeof(data));
-        final_queue[0] = new_block;
-        final_q_size++;
-        return;
+        if(new_block.op == 'r' || new_block.op == 'w') {
+            final_queue = (data*)malloc(sizeof(data));
+            final_queue[0] = new_block;
+            final_q_size++;
+            return;
+        } else {
+                printf("operação invalida, instrução não inserida\n");
+                return;
+            }
     } else {
         for(i=0; i<final_q_size; i++) {
             aux = final_queue[i];
             if(new_block.op == 'r') {
                 if(aux.op == new_block.op && aux.num + new_block.num <= 64) {
-                    if(aux.bloco_inicial <= (new_block.bloco_inicial + new_block.num) && aux.bloco_inicial > new_block.bloco_inicial) {
+                    if(aux.bloco_inicial <= (new_block.bloco_inicial + new_block.num) && aux.bloco_inicial >= new_block.bloco_inicial) {
                         merge = 1;
                         data operation = block_merge(new_block, aux);
                         delete_from_final_array(i);
                         insert(operation);
                     }
-                    else if(new_block.bloco_inicial <= (aux.bloco_inicial + aux.num) && new_block.bloco_inicial > aux.bloco_inicial) {
+                    else if(new_block.bloco_inicial <= (aux.bloco_inicial + aux.num) && new_block.bloco_inicial >= aux.bloco_inicial) {
                         merge = 1;
                         data operation = block_merge(new_block, aux);
                         delete_from_final_array(i);
@@ -103,8 +108,10 @@ void insert(data new_block) {
                         insert(operation);
                     }
                 }
-            } else 
-                printf("operação invalida, instrução não inserida");
+            } else {
+                printf("operação invalida, instrução não inserida\n");
+                return;
+            }
         }
     };
     if(merge == 0){
